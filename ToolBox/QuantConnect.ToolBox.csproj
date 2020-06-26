@@ -327,6 +327,7 @@
     <Compile Include="IQFeedDownloader\IQFeedDataDownloader.cs" />
     <Compile Include="IQFeedDownloader\IQFeedDownloaderProgram.cs" />
     <Compile Include="IVolatilityEquityConverter\IVolatilityEquityConverterProgram.cs" />
+    <Compile Include="Polygon\Constants\PolygonEndpoints.cs" />
     <Compile Include="Polygon\PolygonAPI.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderProgram.cs" />
