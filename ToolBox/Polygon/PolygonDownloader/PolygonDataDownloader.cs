@@ -1,6 +1,6 @@
 ﻿/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
- * Lean Algorithmic Trading Engine v2.0. Copyright 2017 QuantConnect Corporation.
+ * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 using QuantConnect.Data;
 
-namespace QuantConnect.ToolBox.PolygonDownloader
+namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
     /// <summary>
     /// 
