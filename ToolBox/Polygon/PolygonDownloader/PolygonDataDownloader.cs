@@ -22,20 +22,36 @@ using System.Text;
 using System.Threading.Tasks;
 
 using QuantConnect.Data;
+using QuantConnect.Data.Market;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
     /// <summary>
-    /// 
     /// Polygon Data Downloader Class.
-    /// Original by @joao-neves95.
     /// 
+    /// <para></para>
+    /// Original by @joao-neves95.
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
     public class PolygonDataDownloader : IDataDownloader
     {
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
+        public PolygonDataDownloader(string apiKey)
         {
+            this.ApiKey = apiKey;
+            this.PolygonAPI = new PolygonAPI(apiKey);
+        }
+
+        private PolygonAPI PolygonAPI { get; set; }
+
+        public string ApiKey { get; set; }
+
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startDate, DateTime endDate)
+        {
+            if (resolution == Resolution.Tick)
+            {
+                return this.PolygonAPI.GetEquitiesHistoricTradesAsync(symbol, startDate, endDate).GetAwaiter().GetResult();
+            }
+
             throw new NotImplementedException();
         }
     }

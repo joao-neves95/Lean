@@ -21,13 +21,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using QuantConnect.Data;
+using QuantConnect.Logging;
+
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
     /// <summary>
-    /// 
     /// Polygon Data Downloader Program.
-    /// Original by @joao-neves95.
     /// 
+    /// <para></para>
+    /// Original by @joao-neves95.
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
     public static class PolygonDownloaderProgram
@@ -39,8 +42,21 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
         /// <param name="resolution"></param>
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
-        public static void PolygonDownloader(IList<string> tickers, string resolution, DateTime fromDate, DateTime toDate)
+        public static void PolygonDownloader(PolygonDownloaderParams polygonDownloaderParams)
         {
+            try
+            {
+                PolygonDataDownloader polygonDownloader = new PolygonDataDownloader("xxx");
+
+                IEnumerable<BaseData> data = polygonDownloader.Get(
+                    polygonDownloaderParams.Tickers[0], Resolution.Tick, polygonDownloaderParams.FromDate, polygonDownloaderParams.ToDate
+                );
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
             throw new NotImplementedException();
         }
     }

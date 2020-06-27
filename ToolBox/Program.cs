@@ -47,6 +47,7 @@ using QuantConnect.ToolBox.YahooDownloader;
 using QuantConnect.Util;
 using QuantConnect.ToolBox.SmartInsider;
 using QuantConnect.ToolBox.TiingoNewsConverter;
+using QuantConnect.ToolBox.Polygon.PolygonDownloader;
 
 namespace QuantConnect.ToolBox
 {
@@ -170,6 +171,20 @@ namespace QuantConnect.ToolBox
                         TradingEconomicsDataDownloader.TradingEconomicsCalendarDownloaderProgram.TradingEconomicsCalendarDownloader();
                         break;
 
+                    case "plgndl":
+                    case "polygondl":
+                    case "polygondownloader":
+                        PolygonDownloaderProgram.PolygonDownloader(
+                            new PolygonDownloaderParams()
+                            {
+                                Tickers = tickers,
+                                Resolution = resolution,
+                                FromDate = fromDate,
+                                ToDate = toDate
+                            }
+                        );
+                        break;
+
                     default:
                         PrintMessageAndExit(1, "ERROR: Unrecognized --app value");
                         break;
@@ -268,7 +283,7 @@ namespace QuantConnect.ToolBox
                         TiingoNewsConverterProgram.TiingoNewsConverter(
                             GetParameterOrExit(optionsObject, "source-dir"),
                             GetParameterOrExit(optionsObject, "destination-dir"),
-                            date != null ? DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture) : (DateTime?) null);
+                            date != null ? DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture) : (DateTime?)null);
                         break;
                     case "bzncv":
                     case "benzinganewsconverter":
