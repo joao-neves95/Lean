@@ -45,8 +45,10 @@ namespace QuantConnect.ToolBox.Polygon
         public PolygonAPI(string apiKey)
         {
             this.ApiKey = apiKey;
-            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest);
-            this.UriBuilder.Query = PolygonEndpoints.ApiKeyQueryKey_Rest + "=" + this.ApiKey;
+            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest)
+            {
+                Query = PolygonEndpoints.ApiKeyQueryKey_Rest + "=" + this.ApiKey
+            };
         }
 
         ~PolygonAPI()
@@ -83,6 +85,26 @@ namespace QuantConnect.ToolBox.Polygon
         public bool Disposed { get; private set; }
 
         #endregion PUBLIC PROPERTIES
+
+        #region PUBLIC STATIC PROPERTIES
+
+        public static string[] GetAllImplementedResolutionsStr
+        {
+            get
+            {
+                return new string[] { "Tick" };
+            }
+        }
+
+        public static Resolution[] GetAllImplementedResolutions
+        {
+            get
+            {
+                return new Resolution[] { Resolution.Tick };
+            }
+        }
+
+        #endregion PUBLIC STATIC PROPERTIES
 
         #region PRIVATE METHODS
 

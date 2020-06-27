@@ -12,11 +12,15 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 
         private const string _InvalidResolution = "Invalid resoltion ";
 
-        //public const string ResolutionPossibleValues = "--resolution=Tick/Second/Minute/Hour/Daily/All";
-
-        public const string ResolutionPossibleValues = "--resolution=Tick/All";
-
         public const string NotImplementedResolution = "Resoltion not yet implemented.";
+
+        public static string ResolutionPossibleValues
+        {
+            get
+            {
+                return $"--resolution=${PolygonAPI.GetAllImplementedResolutionsStr}/All";
+            }
+        }
 
         public static string InvalidResolution(string invalidValue)
         {
