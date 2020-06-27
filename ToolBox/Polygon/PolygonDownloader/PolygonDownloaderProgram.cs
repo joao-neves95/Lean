@@ -19,12 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using QuantConnect.Data;
 using QuantConnect.Logging;
 using QuantConnect.ToolBox.Polygon.Constants;
+using QuantConnect.ToolBox.Polygon.Enums;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
@@ -67,7 +66,26 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                     resolutions = new Resolution[1] { resolution };
                 }
 
-                PolygonDataDownloader polygonDownloader = new PolygonDataDownloader(@params.ApiKey);
+                AssetType assetType;
+
+                if (!Enum.TryParse(@params.AssetType, true, out assetType))
+                {
+                    throw new Exception(PolygonMessages.InvalidAssetType(@params.AssetType));
+                }
+
+                IDataDownloader polygonDownloader;
+
+                switch (assetType)
+                {
+                    case AssetType.Stock:
+                    case AssetType.Equity:
+                        polygonDownloader = new PolygonCryptoDataDownloader(@params.ApiKey);
+                        break;
+                    case AssetType.Crypto:
+                    case AssetType.Forex:
+                    default:
+                        throw new Exception(PolygonMessages.ErrorNotice + PolygonMessages.NotImplementedAssetType);
+                }
 
                 IEnumerable<BaseData> data = new List<BaseData>();
 

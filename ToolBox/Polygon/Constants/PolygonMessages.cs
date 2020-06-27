@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuantConnect.ToolBox.Polygon.Enums;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +10,19 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 {
     public static class PolygonMessages
     {
+        #region PROPERTIES
+
         public const string ErrorNotice = "PolygonDownloader ERROR: ";
 
         private const string _InvalidResolution = "Invalid resoltion ";
 
         public const string NotImplementedResolution = "Resoltion not yet implemented.";
 
-        public static string ResolutionPossibleValues
+        private const string _InvalidAssetType = "Invalid asset type ";
+
+        public const string NotImplementedAssetType = "Asset Type not yet implemented.";
+
+        public static string ResolutionUse
         {
             get
             {
@@ -22,11 +30,28 @@ namespace QuantConnect.ToolBox.Polygon.Constants
             }
         }
 
+        public static string AssetTypesUse
+        {
+            get
+            {
+                return $"--asset-type=${String.Join("/", Enum.GetNames(typeof(AssetType)))}";
+            }
+        }
+
+        #endregion PROPERTIES
+
         public static string InvalidResolution(string invalidValue)
         {
             return PolygonMessages.ErrorNotice + PolygonMessages._InvalidResolution + $"'{invalidValue}'." +
                    Environment.NewLine +
-                   "Please use: " + PolygonMessages.ResolutionPossibleValues;
+                   "Please use: " + PolygonMessages.ResolutionUse;
+        }
+
+        public static string InvalidAssetType(string invalidValue)
+        {
+            return PolygonMessages.ErrorNotice + PolygonMessages._InvalidAssetType + $"'{invalidValue}'." +
+                   Environment.NewLine +
+                   "Please use:" + PolygonMessages.AssetTypesUse;
         }
     }
 }

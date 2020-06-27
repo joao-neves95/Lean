@@ -17,26 +17,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using QuantConnect.Data;
-using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Constants;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
     /// <summary>
-    /// Polygon Data Downloader Class.
+    /// Polygon Crypto Data Downloader Class.
     /// 
     /// <para></para>
     /// Original by @joao-neves95.
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
-    public class PolygonDataDownloader : IDataDownloader
+    public class PolygonCryptoDataDownloader : IDataDownloader
     {
-        public PolygonDataDownloader(string apiKey)
+        public PolygonCryptoDataDownloader(string apiKey)
         {
             this.ApiKey = apiKey;
             this.PolygonAPI = new PolygonAPIClient(apiKey);
@@ -51,7 +47,6 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
             switch (resolution)
             {
                 case Resolution.Tick:
-                    return this.PolygonAPI.GetEquitiesHistoricTradesAsync(symbol, startDate, endDate).GetAwaiter().GetResult();
                 case Resolution.Second:
                 case Resolution.Minute:
                 case Resolution.Hour:
