@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -93,7 +93,8 @@ namespace QuantConnect.ToolBox.Polygon
         /// Original author @joao-neves95.
         /// </summary>
         /// <typeparam name="T"> Polygon's endpoint data model </typeparam>
-        /// <param name="pathEndpoint"> The endpoint to request. Eg.: "" </param>
+        /// <param name="pathEndpoint"> The endpoint to request. E.g.: "v2/ticks/stocks/trades" </param>
+        /// <param name="additionalQueryParams"> Adds adicional parameters to the request's query string. </param>
         /// <returns> T | null </returns>
         private async Task<T> GetAsync<T>(string pathEndpoint, string[] additionalQueryParams = null)
         {
@@ -118,5 +119,63 @@ namespace QuantConnect.ToolBox.Polygon
         }
 
         #endregion PRIVATE METHODS
+
+        #region PUBLIC METHODS
+
+        public async Task<List<Tick>> GetEquitiesHistoricTradesAsync(Symbol symbol, DateTime startDate, DateTime endDate)
+        {
+            // TODO: (_SHIVAYL_) - Turn this pagination logic generic enought to be used by every (or most) endpoints.
+
+            DateTime currentDate = startDate;
+
+            Equities<HistoricTradeV2> completeResponse = new Equities<HistoricTradeV2>();
+            Equities<HistoricTradeV2> currentResponse = null;
+
+            while (currentDate <= endDate)
+            {
+                int lastRequestCount = -1;
+                int lastResultTimestamp = -1;
+                do
+                {
+                    currentResponse = await this.GetAsync<Equities<HistoricTradeV2>>(
+                        $"{PolygonEndpoints.Path_EquitiesHistoricTrades_V2}/" +
+                        $"{symbol.Value}/" +
+                        $"{startDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}",
+                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.TimestampQueryKey_Rest}={lastResultTimestamp}" }
+                    );
+
+                    if (currentResponse == null || currentResponse.Results.Count == 0)
+                    {
+                        // TODO: (_SHIVAYL_) - Log invalid response.
+                        continue;
+                    }
+
+                    if (lastRequestCount == -1)
+                    {
+                        completeResponse = currentResponse;
+                    }
+                    else
+                    {
+                        completeResponse.Add(currentResponse);
+                    }
+
+                    lastRequestCount = currentResponse.ResultsCount;
+
+                } while (lastRequestCount >= PolygonEndpoints.MaxResponseSizeLimit);
+
+                currentDate.AddDays(1);
+            }
+
+            List<Tick> result = new List<Tick>();
+
+            for (int i = 0; i < completeResponse.Results.Count; ++i)
+            {
+                result.Add(completeResponse.Results[i].ToTick());
+            }
+
+            return result;
+        }
+
+        #endregion PUBLIC METHODS
     }
 }
