@@ -25,6 +25,10 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 {
     public static class PolygonEndpoints
     {
+        public const int MaxResponseSizeLimit = 50000;
+
+        public const string DateFormat = "yyyy-MM-dd";
+
         public const string Protocol_Rest = "https";
 
         public const string Protocol_WS = "wss";
@@ -34,5 +38,9 @@ namespace QuantConnect.ToolBox.Polygon.Constants
         public const string Host_WS = "socket.polygon.io";
 
         public const string ApiKeyQueryKey_Rest = "apiKey";
+
+        public const string TimestampQueryKey_Rest = "apiKey";
+
+        public const string Path_EquitiesHistoricTrades_V2 = "v2/ticks/stocks/trades";
     }
 }
