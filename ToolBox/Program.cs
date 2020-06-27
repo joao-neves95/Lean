@@ -180,7 +180,8 @@ namespace QuantConnect.ToolBox
                                 Tickers = tickers,
                                 Resolution = resolution,
                                 FromDate = fromDate,
-                                ToDate = toDate
+                                ToDate = toDate,
+                                ApiKey = GetParameterOrExit(optionsObject, "api-key")
                             }
                         );
                         break;

@@ -15,5 +15,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
+
+        public string ApiKey { get; set; }
     }
 }

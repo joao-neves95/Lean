@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
+using QuantConnect.ToolBox.Polygon.Constants;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
@@ -47,12 +48,21 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startDate, DateTime endDate)
         {
-            if (resolution == Resolution.Tick)
+            switch (resolution)
             {
-                return this.PolygonAPI.GetEquitiesHistoricTradesAsync(symbol, startDate, endDate).GetAwaiter().GetResult();
+                case Resolution.Tick:
+                    return this.PolygonAPI.GetEquitiesHistoricTradesAsync(symbol, startDate, endDate).GetAwaiter().GetResult();
+                case Resolution.Second:
+                case Resolution.Minute:
+                case Resolution.Hour:
+                case Resolution.Daily:
+                default:
+                    throw new NotImplementedException(
+                        PolygonMessages.NotImplementedResolution +
+                        PolygonMessages.InvalidResolution(nameof(resolution))
+                    );
             }
 
-            throw new NotImplementedException();
         }
     }
 }

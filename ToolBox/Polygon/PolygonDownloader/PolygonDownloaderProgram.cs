@@ -17,12 +17,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using QuantConnect.Data;
 using QuantConnect.Logging;
+using QuantConnect.ToolBox.Polygon.Constants;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
@@ -42,21 +44,49 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
         /// <param name="resolution"></param>
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
-        public static void PolygonDownloader(PolygonDownloaderParams polygonDownloaderParams)
+        public static void PolygonDownloader(PolygonDownloaderParams @params)
         {
             try
             {
-                PolygonDataDownloader polygonDownloader = new PolygonDataDownloader("xxx");
+                Resolution[] resolutions;
+                bool resolutionAll = @params.Resolution.ToUpper(CultureInfo.InvariantCulture) == "ALL";
 
-                IEnumerable<BaseData> data = polygonDownloader.Get(
-                    polygonDownloaderParams.Tickers[0], Resolution.Tick, polygonDownloaderParams.FromDate, polygonDownloaderParams.ToDate
-                );
+                if (resolutionAll)
+                {
+                    resolutions = PolygonAPI.GetAllImplementedResolutions;
+                }
+                else
+                {
+                    Resolution resolution;
 
+                    if (!Parse.TryParseResolution(@params.Resolution, out resolution))
+                    {
+                        throw new Exception(PolygonMessages.InvalidResolution(@params.Resolution));
+                    }
+
+                    resolutions = new Resolution[1] { resolution };
+                }
+
+                PolygonDataDownloader polygonDownloader = new PolygonDataDownloader(@params.ApiKey);
+
+                IEnumerable<BaseData> data = new List<BaseData>();
+
+                for (int iTicker = 0; iTicker < @params.Tickers.Count; ++iTicker)
+                {
+                    for (int iResolution = 0; iResolution < resolutions.Length; ++iResolution)
+                    {
+                        data.Concat(polygonDownloader.Get(
+                            @params.Tickers[iTicker], resolutions[iResolution], @params.FromDate, @params.ToDate
+                        ));
+                    }
+                }
             }
             catch (Exception e)
             {
                 Log.Error(e);
+                Environment.Exit(1);
             }
+
             throw new NotImplementedException();
         }
     }
