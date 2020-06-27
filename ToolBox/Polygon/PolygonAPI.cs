@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -24,7 +25,9 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
+using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Constants;
+using QuantConnect.ToolBox.Polygon.Models;
 
 namespace QuantConnect.ToolBox.Polygon
 {
@@ -92,9 +95,14 @@ namespace QuantConnect.ToolBox.Polygon
         /// <typeparam name="T"> Polygon's endpoint data model </typeparam>
         /// <param name="pathEndpoint"> The endpoint to request. Eg.: "" </param>
         /// <returns> T | null </returns>
-        private async Task<T> GetAsync<T>(string pathEndpoint)
+        private async Task<T> GetAsync<T>(string pathEndpoint, string[] additionalQueryParams = null)
         {
             this.UriBuilder.Path = pathEndpoint;
+
+            if (additionalQueryParams != null && additionalQueryParams.Length > 0)
+            {
+                this.UriBuilder.Query = this.UriBuilder.Query.Substring(1) + string.Join("&", additionalQueryParams);
+            }
 
             T result = default(T);
             HttpResponseMessage response = await this.HttpClient.GetAsync(this.UriBuilder.Uri);
@@ -103,6 +111,8 @@ namespace QuantConnect.ToolBox.Polygon
             {
                 return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
             }
+
+            // TODO: (_SHIVAYL_) - Add error logging.
 
             return result;
         }
