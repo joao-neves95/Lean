@@ -38,11 +38,11 @@ namespace QuantConnect.ToolBox.Polygon
     /// 
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
-    public class PolygonAPI : IDisposable
+    public class PolygonAPIClient : IDisposable
     {
         #region CONSTRUCTOR / DESTRUCTOR
 
-        public PolygonAPI(string apiKey)
+        public PolygonAPIClient(string apiKey)
         {
             this.ApiKey = apiKey;
             this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest)
@@ -51,7 +51,7 @@ namespace QuantConnect.ToolBox.Polygon
             };
         }
 
-        ~PolygonAPI()
+        ~PolygonAPIClient()
         {
             if (!this.Disposed)
             {
@@ -88,7 +88,7 @@ namespace QuantConnect.ToolBox.Polygon
 
         #region PUBLIC STATIC PROPERTIES
 
-        public static string[] GetAllImplementedResolutionsStr
+        public static string[] ImplementedResolutionsStr
         {
             get
             {
@@ -96,7 +96,7 @@ namespace QuantConnect.ToolBox.Polygon
             }
         }
 
-        public static Resolution[] GetAllImplementedResolutions
+        public static Resolution[] ImplementedResolutions
         {
             get
             {

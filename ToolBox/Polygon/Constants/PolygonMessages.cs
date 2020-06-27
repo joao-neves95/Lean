@@ -18,7 +18,7 @@ namespace QuantConnect.ToolBox.Polygon.Constants
         {
             get
             {
-                return $"--resolution=${PolygonAPI.GetAllImplementedResolutionsStr}/All";
+                return $"--resolution=${PolygonAPIClient.ImplementedResolutionsStr}/All";
             }
         }
 

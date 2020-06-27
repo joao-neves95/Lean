@@ -53,7 +53,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 
                 if (resolutionAll)
                 {
-                    resolutions = PolygonAPI.GetAllImplementedResolutions;
+                    resolutions = PolygonAPIClient.ImplementedResolutions;
                 }
                 else
                 {

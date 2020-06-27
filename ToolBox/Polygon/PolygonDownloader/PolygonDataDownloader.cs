@@ -39,10 +39,10 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
         public PolygonDataDownloader(string apiKey)
         {
             this.ApiKey = apiKey;
-            this.PolygonAPI = new PolygonAPI(apiKey);
+            this.PolygonAPI = new PolygonAPIClient(apiKey);
         }
 
-        private PolygonAPI PolygonAPI { get; set; }
+        private PolygonAPIClient PolygonAPI { get; set; }
 
         public string ApiKey { get; set; }
 
