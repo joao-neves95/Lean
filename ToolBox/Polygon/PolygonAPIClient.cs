@@ -144,18 +144,13 @@ namespace QuantConnect.ToolBox.Polygon
             return result;
         }
 
-        #endregion PRIVATE METHODS
-
-        #region PUBLIC METHODS
-
-        public async Task<List<Tick>> GetEquitiesHistoricTradesAsync(Symbol symbol, DateTime startDate, DateTime endDate)
+        private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<T>(Func<DateTime, string> pathEndpointBuilder, DateTime startDate, DateTime endDate, int maxLimit = 10000)
+            where T : HistoricTradesBase<HistoricTrade>
         {
-            // TODO: (_SHIVAYL_) - Turn this pagination logic generic enought to be used by every (or most) endpoints.
-
             DateTime currentDate = startDate;
 
-            StockHistoricTrades<HistoricTrade> completeResponse = null;
-            StockHistoricTrades<HistoricTrade> currentResponse = null;
+            T completeResponse = default(T);
+            T currentResponse = default(T);
 
             while (currentDate <= endDate)
             {
@@ -163,11 +158,9 @@ namespace QuantConnect.ToolBox.Polygon
                 int lastResultTimestamp = -1;
                 do
                 {
-                    currentResponse = await this.GetAsync<StockHistoricTrades<HistoricTrade>>(
-                        $"{PolygonEndpoints.Path_EquitiesHistoricTrades_V2}/" +
-                        $"{symbol.Value}/" +
-                        $"{startDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}",
-                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_Timestamp_Rest}={lastResultTimestamp}" }
+                    currentResponse = await this.GetAsync<T>(
+                        pathEndpointBuilder(currentDate),
+                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_OffsetTimestamp_Rest}={lastResultTimestamp}" }
                     );
 
                     if (currentResponse == null || currentResponse.Results.Count == 0)
@@ -187,7 +180,7 @@ namespace QuantConnect.ToolBox.Polygon
 
                     lastResultCount = currentResponse.Results.Count;
 
-                } while (lastResultCount >= PolygonEndpoints.ResponseSizeLimit_EquitiesHistoricTrades);
+                } while (lastResultCount >= maxLimit);
 
                 currentDate.AddDays(1);
             }
@@ -202,9 +195,34 @@ namespace QuantConnect.ToolBox.Polygon
             return result;
         }
 
-        public async Task<List<Tick>> GetCryptoHistoricTrades(Symbol symbol, DateTime startDate, DateTime endDate)
+        #endregion PRIVATE METHODS
+
+        #region PUBLIC METHODS
+
+        public async Task<List<Tick>> GetStockHistoricTradesAsync(Symbol symbol, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return await this.GetHistoricTradesPaginatedAsync<StockHistoricTrades<HistoricTrade>>(
+                (currentDate) =>
+                {
+                    return $"{PolygonEndpoints.Path_StockHistoricTrades_V2}/" +
+                           $"{symbol.Value}/" +
+                           $"{currentDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}";
+                },
+                startDate, endDate, PolygonEndpoints.ResponseLimit_StockHistoricTrades
+            );
+        }
+
+        public async Task<List<Tick>> GetCryptoHistoricTrades(string fromTicker, string toTicker, DateTime startDate, DateTime endDate)
+        {
+            return await this.GetHistoricTradesPaginatedAsync<CryptoHistoricTrades<HistoricTrade>>(
+                (currentDate) =>
+                {
+                    return $"{PolygonEndpoints.Path_CryptoHistoricTrades_V1}/" +
+                           $"{fromTicker}/{toTicker}/" +
+                           $"{currentDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}";
+                },
+                startDate, endDate, PolygonEndpoints.ResponseLimit_CryptoHistoricTrades
+            );
         }
 
         #endregion PUBLIC METHODS

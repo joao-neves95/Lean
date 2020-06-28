@@ -25,7 +25,9 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 {
     public static class PolygonEndpoints
     {
-        public const int ResponseSizeLimit_EquitiesHistoricTrades = 50000;
+        public const int ResponseLimit_StockHistoricTrades = 50000;
+
+        public const int ResponseLimit_CryptoHistoricTrades = 10000;
 
         public const string DateFormat = "yyyy-MM-dd";
 
@@ -39,8 +41,10 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 
         public const string QueryKey_ApiKey_Rest = "apiKey";
 
-        public const string QueryKey_Timestamp_Rest = "apiKey";
+        public const string QueryKey_OffsetTimestamp_Rest = "offset";
 
-        public const string Path_EquitiesHistoricTrades_V2 = "v2/ticks/stocks/trades";
+        public const string Path_StockHistoricTrades_V2 = "v2/ticks/stocks/trades";
+
+        public const string Path_CryptoHistoricTrades_V1 = "v1/historic/crypto";
     }
 }
