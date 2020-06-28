@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 
 namespace QuantConnect.ToolBox.Polygon.Models
 {
-    public class CryptoHistoricTrades
+    public class CryptoHistoricTrades<T>
         where T : IPolygonAPIResult
     {
         [JsonProperty("day")]
