@@ -331,6 +331,7 @@
     <Compile Include="Polygon\Constants\PolygonMessages.cs" />
     <Compile Include="Polygon\Enums\AssetType.cs" />
     <Compile Include="Polygon\Models\CryptoHistoricTrades.cs" />
+    <Compile Include="Polygon\Models\HistoricTradesBase.cs" />
     <Compile Include="Polygon\Models\StockHistoricTrades.cs" />
     <Compile Include="Polygon\Models\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\IPolygonAPIResult.cs" />

@@ -21,12 +21,9 @@ using Newtonsoft.Json;
 
 namespace QuantConnect.ToolBox.Polygon.Models
 {
-    public class StockHistoricTrades<T>
+    public class StockHistoricTrades<T> : HistoricTradesBase<T>
         where T : IPolygonAPIResult
     {
-        [JsonProperty("results_count")]
-        public int ResultsCount { get; set; } = 0;
-
         [JsonProperty("db_latency")]
         public int MsLatency { get; set; }
 
@@ -36,15 +33,10 @@ namespace QuantConnect.ToolBox.Polygon.Models
         [JsonProperty("ticker")]
         public string Ticker { get; set; }
 
+        [JsonProperty("results_count")]
+        public override int ResultsCount { get; set; } = 0;
+
         [JsonProperty("results")]
-        public List<T> Results { get; set; } = new List<T>();
-
-        public StockHistoricTrades<T> Add(StockHistoricTrades<T> newEquitiesInstance)
-        {
-            this.ResultsCount += newEquitiesInstance.ResultsCount;
-            this.Results.AddRange(newEquitiesInstance.Results);
-
-            return this;
-        }
+        public override List<T> Results { get; set; } = new List<T>();
     }
 }
