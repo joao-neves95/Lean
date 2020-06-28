@@ -30,9 +30,9 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
     /// Original by @joao-neves95.
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
-    public class PolygonEquityDataDownloader : IDataDownloader
+    public class PolygonStockDataDownloader : IDataDownloader
     {
-        public PolygonEquityDataDownloader(string apiKey)
+        public PolygonStockDataDownloader(string apiKey)
         {
             this.ApiKey = apiKey;
             this.PolygonAPI = new PolygonAPIClient(apiKey);

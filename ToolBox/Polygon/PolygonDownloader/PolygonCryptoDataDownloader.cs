@@ -47,6 +47,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
             switch (resolution)
             {
                 case Resolution.Tick:
+                    return this.PolygonAPI.GetCryptoHistoricTrades(symbol, startDate, endDate).GetAwaiter().GetResult();
                 case Resolution.Second:
                 case Resolution.Minute:
                 case Resolution.Hour:

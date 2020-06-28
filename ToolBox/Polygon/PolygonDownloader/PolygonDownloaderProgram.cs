@@ -79,9 +79,11 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                 {
                     case AssetType.Stock:
                     case AssetType.Equity:
-                        polygonDownloader = new PolygonCryptoDataDownloader(@params.ApiKey);
+                        polygonDownloader = new PolygonStockDataDownloader(@params.ApiKey);
                         break;
                     case AssetType.Crypto:
+                        polygonDownloader = new PolygonCryptoDataDownloader(@params.ApiKey);
+                        break;
                     case AssetType.Forex:
                     default:
                         throw new Exception(PolygonMessages.ErrorNotice + PolygonMessages.NotImplementedAssetType);

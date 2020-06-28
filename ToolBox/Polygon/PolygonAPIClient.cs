@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -29,6 +29,7 @@ using QuantConnect.ToolBox.Polygon.Models;
 
 namespace QuantConnect.ToolBox.Polygon
 {
+    // https://polygon.io/docs/swagger.json
     /// <summary>
     /// 
     /// Class to interact with Polygon's API.
@@ -45,7 +46,7 @@ namespace QuantConnect.ToolBox.Polygon
             this.ApiKey = apiKey;
             this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest)
             {
-                Query = PolygonEndpoints.ApiKeyQueryKey_Rest + "=" + this.ApiKey
+                Query = PolygonEndpoints.QueryKey_ApiKey_Rest + "=" + this.ApiKey
             };
         }
 
@@ -130,7 +131,12 @@ namespace QuantConnect.ToolBox.Polygon
 
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Include,
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    ObjectCreationHandling = ObjectCreationHandling.Auto
+                });
             }
 
             // TODO: (_SHIVAYL_) - Add error logging.
@@ -148,20 +154,20 @@ namespace QuantConnect.ToolBox.Polygon
 
             DateTime currentDate = startDate;
 
-            Equities<HistoricTradeV2> completeResponse = new Equities<HistoricTradeV2>();
-            Equities<HistoricTradeV2> currentResponse = null;
+            StockHistoricTrades<HistoricTrade> completeResponse = null;
+            StockHistoricTrades<HistoricTrade> currentResponse = null;
 
             while (currentDate <= endDate)
             {
-                int lastRequestCount = -1;
+                int lastResultCount = -1;
                 int lastResultTimestamp = -1;
                 do
                 {
-                    currentResponse = await this.GetAsync<Equities<HistoricTradeV2>>(
+                    currentResponse = await this.GetAsync<StockHistoricTrades<HistoricTrade>>(
                         $"{PolygonEndpoints.Path_EquitiesHistoricTrades_V2}/" +
                         $"{symbol.Value}/" +
                         $"{startDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}",
-                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.TimestampQueryKey_Rest}={lastResultTimestamp}" }
+                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_Timestamp_Rest}={lastResultTimestamp}" }
                     );
 
                     if (currentResponse == null || currentResponse.Results.Count == 0)
@@ -170,7 +176,7 @@ namespace QuantConnect.ToolBox.Polygon
                         continue;
                     }
 
-                    if (lastRequestCount == -1)
+                    if (lastResultCount == -1)
                     {
                         completeResponse = currentResponse;
                     }
@@ -179,9 +185,9 @@ namespace QuantConnect.ToolBox.Polygon
                         completeResponse.Add(currentResponse);
                     }
 
-                    lastRequestCount = currentResponse.ResultsCount;
+                    lastResultCount = currentResponse.Results.Count;
 
-                } while (lastRequestCount >= PolygonEndpoints.MaxResponseSizeLimit);
+                } while (lastResultCount >= PolygonEndpoints.ResponseSizeLimit_EquitiesHistoricTrades);
 
                 currentDate.AddDays(1);
             }
@@ -194,6 +200,11 @@ namespace QuantConnect.ToolBox.Polygon
             }
 
             return result;
+        }
+
+        public async Task<List<Tick>> GetCryptoHistoricTrades(Symbol symbol, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion PUBLIC METHODS
