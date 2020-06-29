@@ -44,9 +44,6 @@ namespace QuantConnect.ToolBox.Polygon
         {
             this.ApiKey = apiKey;
             this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest);
-            {
-                Query = PolygonEndpoints.QueryKey_ApiKey_Rest + "=" + this.ApiKey
-            };
         }
 
         ~PolygonAPIClient()
