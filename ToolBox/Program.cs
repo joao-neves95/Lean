@@ -181,7 +181,7 @@ namespace QuantConnect.ToolBox
                                 Resolution = resolution,
                                 FromDate = fromDate,
                                 ToDate = toDate,
-                                AssetType = GetParameterOrExit(optionsObject, "asset-type"),
+                                SecurityType = GetParameterOrExit(optionsObject, "security-type"),
                                 ApiKey = GetParameterOrExit(optionsObject, "api-key")
                             }
                         );

@@ -340,9 +340,7 @@
     <Compile Include="Polygon\Models\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\ITickResult.cs" />
     <Compile Include="Polygon\PolygonAPIClient.cs" />
-    <Compile Include="Polygon\PolygonDownloader\PolygonForexDataDownloader.cs" />
-    <Compile Include="Polygon\PolygonDownloader\PolygonCryptoDataDownloader.cs" />
-    <Compile Include="Polygon\PolygonDownloader\PolygonStockDataDownloader.cs" />
+    <Compile Include="Polygon\PolygonDownloader\PolygonDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderParams.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderProgram.cs" />
     <Compile Include="Program.cs" />

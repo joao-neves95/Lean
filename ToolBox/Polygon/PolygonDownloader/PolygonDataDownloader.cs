@@ -20,6 +20,7 @@ using System.Collections.Generic;
 
 using QuantConnect.Data;
 using QuantConnect.ToolBox.Polygon.Constants;
+using QuantConnect.ToolBox.Polygon.Enums;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
@@ -30,9 +31,9 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
     /// Original by @joao-neves95.
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
-    public class PolygonStockDataDownloader : IDataDownloader
+    public class PolygonDataDownloader : IDataDownloader
     {
-        public PolygonStockDataDownloader(string apiKey)
+        public PolygonDataDownloader(string apiKey)
         {
             this.ApiKey = apiKey;
             this.PolygonAPI = new PolygonAPIClient(apiKey);
@@ -47,11 +48,26 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
             switch (resolution)
             {
                 case Resolution.Tick:
-                    return this.PolygonAPI.GetStockHistoricTradesAsync(symbol.Value, startDate, endDate).GetAwaiter().GetResult();
-                case Resolution.Second:
+                    switch (symbol.SecurityType)
+                    {
+                        case SecurityType.Equity:
+                            return this.PolygonAPI.GetStockHistoricTradesAsync(symbol.Value, startDate, endDate)
+                                                  .GetAwaiter().GetResult();
+                        case SecurityType.Forex:
+                            return this.PolygonAPI.GetForexHistoricTradesAsync("", "", startDate, endDate)
+                                       .GetAwaiter().GetResult();
+                        case SecurityType.Crypto:
+                            return this.PolygonAPI.GetCryptoHistoricTradesAsync("", "", startDate, endDate)
+                                                  .GetAwaiter().GetResult();
+                    }
+
+                    throw new Exception();
+
                 case Resolution.Minute:
                 case Resolution.Hour:
                 case Resolution.Daily:
+                    return this.PolygonAPI.GetAggregatesAsync(symbol.Value, PolygonAPIClient.ComputeTimespan(resolution), startDate, endDate)
+                                          .GetAwaiter().GetResult();
                 default:
                     throw new NotImplementedException(
                         PolygonMessages.NotImplementedResolution +

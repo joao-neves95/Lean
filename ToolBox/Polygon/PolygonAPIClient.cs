@@ -221,6 +221,25 @@ namespace QuantConnect.ToolBox.Polygon
 
         #endregion PRIVATE METHODS
 
+        #region PUBLIC STATIC METHODS
+
+        public static Timespan ComputeTimespan(Resolution resolution)
+        {
+            switch (resolution)
+            {
+                case Resolution.Minute:
+                    return Timespan.Minute;
+                case Resolution.Hour:
+                    return Timespan.Hour;
+                case Resolution.Daily:
+                    return Timespan.Day;
+                default:
+                    throw new Exception(PolygonMessages.InvalidResolutionTimespan);
+            }
+        }
+
+        #endregion PUBLIC STATIC METHODS
+
         #region PUBLIC METHODS
 
         public async Task<List<Tick>> GetStockHistoricTradesAsync(string ticker, DateTime startDate, DateTime endDate)

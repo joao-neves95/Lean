@@ -71,39 +71,26 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                     resolutions = new Resolution[1] { resolution };
                 }
 
-                AssetType assetType;
+                SecurityType securityType;
 
-                if (!Enum.TryParse(@params.AssetType, true, out assetType))
+                if (!Enum.TryParse(@params.SecurityType, true, out securityType))
                 {
-                    throw new Exception(PolygonMessages.InvalidAssetType(@params.AssetType));
+                    throw new Exception(PolygonMessages.InvalidAssetType(@params.SecurityType));
                 }
 
-                IDataDownloader polygonDownloader;
+                IDataDownloader polygonDownloader = new PolygonDataDownloader(@params.ApiKey);
 
-                switch (assetType)
-                {
-                    case AssetType.Stock:
-                    case AssetType.Equity:
-                        polygonDownloader = new PolygonStockDataDownloader(@params.ApiKey);
-                        break;
-                    case AssetType.Crypto:
-                        polygonDownloader = new PolygonCryptoDataDownloader(@params.ApiKey);
-                        break;
-                    case AssetType.Forex:
-                        polygonDownloader = new PolygonForexDataDownloader(@params.ApiKey);
-                        break;
-                    default:
-                        throw new Exception(PolygonMessages.ErrorNotice + PolygonMessages.NotImplementedAssetType);
-                }
-
-                IEnumerable<BaseData> data = new List<BaseData>();
+                Symbol symbol = null;
+                List<BaseData> data = new List<BaseData>();
 
                 for (int iTicker = 0; iTicker < @params.Tickers.Count; ++iTicker)
                 {
+                    symbol = Symbol.Create(@params.Tickers[iTicker], securityType, "empty");
+
                     for (int iResolution = 0; iResolution < resolutions.Length; ++iResolution)
                     {
-                        data.Concat(polygonDownloader.Get(
-                            @params.Tickers[iTicker], resolutions[iResolution], @params.FromDate, @params.ToDate
+                        data.AddRange(polygonDownloader.Get(
+                            symbol, resolutions[iResolution], @params.FromDate, @params.ToDate
                         ));
                     }
                 }

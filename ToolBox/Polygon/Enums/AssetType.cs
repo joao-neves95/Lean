@@ -8,7 +8,6 @@ namespace QuantConnect.ToolBox.Polygon.Enums
 {
     public enum AssetType
     {
-        Stock,
         Equity,
         Crypto,
         Forex
