@@ -47,7 +47,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
             switch (resolution)
             {
                 case Resolution.Tick:
-                    return this.PolygonAPI.GetCryptoHistoricTrades("", "", startDate, endDate).GetAwaiter().GetResult();
+                    return this.PolygonAPI.GetCryptoHistoricTradesAsync("", "", startDate, endDate).GetAwaiter().GetResult();
                 case Resolution.Second:
                 case Resolution.Minute:
                 case Resolution.Hour:
@@ -58,7 +58,6 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                         PolygonMessages.InvalidResolution(nameof(resolution))
                     );
             }
-
         }
     }
 }

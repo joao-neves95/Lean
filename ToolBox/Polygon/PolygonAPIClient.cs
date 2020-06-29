@@ -103,6 +103,11 @@ namespace QuantConnect.ToolBox.Polygon
 
         #region PRIVATE METHODS
 
+        private string ParseDateString(DateTime dateTime)
+        {
+            return dateTime.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture);
+        }
+
         /// <summary>
         /// Wrapper method to control GET requests with authorization.
         /// 
@@ -197,27 +202,27 @@ namespace QuantConnect.ToolBox.Polygon
 
         #region PUBLIC METHODS
 
-        public async Task<List<Tick>> GetStockHistoricTradesAsync(Symbol symbol, DateTime startDate, DateTime endDate)
+        public async Task<List<Tick>> GetStockHistoricTradesAsync(string ticker, DateTime startDate, DateTime endDate)
         {
-            return await this.GetHistoricTradesPaginatedAsync<StockHistoricTrades<HistoricTrade>>(
+            return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV2<HistoricTrade>, HistoricTrade>(
                 (currentDate) =>
                 {
                     return $"{PolygonEndpoints.Path_StockHistoricTrades_V2}/" +
-                           $"{symbol.Value}/" +
-                           $"{currentDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}";
+                           $"{ticker}/" +
+                           $"{this.ParseDateString(currentDate)}";
                 },
                 startDate, endDate, PolygonEndpoints.ResponseLimit_StockHistoricTrades
             );
         }
 
-        public async Task<List<Tick>> GetCryptoHistoricTrades(string fromTicker, string toTicker, DateTime startDate, DateTime endDate)
+        public async Task<List<Tick>> GetCryptoHistoricTradesAsync(string fromTicker, string toTicker, DateTime startDate, DateTime endDate)
         {
-            return await this.GetHistoricTradesPaginatedAsync<CryptoHistoricTrades<HistoricTrade>>(
+            return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV1<HistoricTrade>, HistoricTrade>(
                 (currentDate) =>
                 {
                     return $"{PolygonEndpoints.Path_CryptoHistoricTrades_V1}/" +
                            $"{fromTicker}/{toTicker}/" +
-                           $"{currentDate.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture)}";
+                           $"{this.ParseDateString(currentDate)}";
                 },
                 startDate, endDate, PolygonEndpoints.ResponseLimit_CryptoHistoricTrades
             );
