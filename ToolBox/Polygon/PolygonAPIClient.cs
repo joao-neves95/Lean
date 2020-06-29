@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Constants;
 using QuantConnect.ToolBox.Polygon.Models;
+using QuantConnect.ToolBox.Polygon.Enums;
 
 namespace QuantConnect.ToolBox.Polygon
 {
@@ -106,6 +107,21 @@ namespace QuantConnect.ToolBox.Polygon
         private string ParseDateString(DateTime dateTime)
         {
             return dateTime.ToString(PolygonEndpoints.DateFormat, CultureInfo.InvariantCulture);
+        }
+
+        private TimeSpan ComputePeriod(Timespan timespan)
+        {
+            switch (timespan)
+            {
+                case Timespan.Minute:
+                    return Time.OneMinute;
+                case Timespan.Hour:
+                    return Time.OneHour;
+                case Timespan.Day:
+                    return Time.OneDay;
+                default:
+                    throw new Exception(PolygonMessages.InvalidResolutionTimespan);
+            }
         }
 
         /// <summary>
@@ -239,6 +255,26 @@ namespace QuantConnect.ToolBox.Polygon
                 },
                 startDate, endDate, PolygonEndpoints.ResponseLimit_ForexHistoricTrades
             );
+        }
+
+        public async Task<List<TradeBar>> GetAggregatesAsync(string ticker, Timespan timespan, DateTime startDate, DateTime endDate)
+        {
+            AggregatesV2 response = await this.GetAsync<AggregatesV2>(
+                $"{PolygonEndpoints.Path_Aggregates_V2}/" +
+                $"{ticker}/1/{Enum.GetName(typeof(Timespan), timespan).ToLowerInvariant()}" +
+                $"{this.ParseDateString(startDate)}/{this.ParseDateString(endDate)}/" +
+                $"false"
+            );
+
+            List<TradeBar> result = new List<TradeBar>();
+            TimeSpan period = this.ComputePeriod(timespan);
+
+            for (int i = 0; i < response.Results.Count; ++i)
+            {
+                result.Add(response.Results[i].ToTradeBar(period));
+            }
+
+            return result;
         }
 
         #endregion PUBLIC METHODS

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
   <Import Project="..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props')" />
@@ -330,7 +330,9 @@
     <Compile Include="Polygon\Constants\PolygonEndpoints.cs" />
     <Compile Include="Polygon\Constants\PolygonMessages.cs" />
     <Compile Include="Polygon\Enums\AssetType.cs" />
-    <Compile Include="Polygon\Models\CryptoHistoricTrades.cs" />
+    <Compile Include="Polygon\Enums\Timespan.cs" />
+    <Compile Include="Polygon\Models\AggregatesV2.cs" />
+    <Compile Include="Polygon\Models\AggregateV2.cs" />
     <Compile Include="Polygon\Models\ForexTrade.cs" />
     <Compile Include="Polygon\Models\HistoricTradesV1.cs" />
     <Compile Include="Polygon\Models\HistoricTradesBase.cs" />
