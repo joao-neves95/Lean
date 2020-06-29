@@ -15,19 +15,23 @@
  * https://github.com/joao-neves95
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace QuantConnect.ToolBox.Polygon.Constants
 {
+    /// <summary>
+    /// Polygon's API endpoint constant values.
+    /// <para></para>
+    /// Docs: <see href="https://polygon.io/docs"/>
+    /// 
+    /// <para></para>
+    /// Original by @joao-neves95.
+    /// </summary>
     public static class PolygonEndpoints
     {
         public const int ResponseLimit_StockHistoricTrades = 50000;
 
         public const int ResponseLimit_CryptoHistoricTrades = 10000;
+
+        public const int ResponseLimit_ForexHistoricTrades = 10000;
 
         public const string DateFormat = "yyyy-MM-dd";
 
@@ -46,5 +50,9 @@ namespace QuantConnect.ToolBox.Polygon.Constants
         public const string Path_StockHistoricTrades_V2 = "v2/ticks/stocks/trades";
 
         public const string Path_CryptoHistoricTrades_V1 = "v1/historic/crypto";
+
+        public const string Path_ForexHistoricTrades_V1 = "v1/historic/forex";
+
+        public const string Path_Aggregates_V2 = "v2/aggs/ticker";
     }
 }
