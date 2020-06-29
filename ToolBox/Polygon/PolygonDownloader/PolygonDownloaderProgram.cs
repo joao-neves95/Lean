@@ -18,12 +18,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
+using QuantConnect.Configuration;
 using QuantConnect.Data;
 using QuantConnect.Logging;
 using QuantConnect.ToolBox.Polygon.Constants;
-using QuantConnect.ToolBox.Polygon.Enums;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
@@ -37,12 +36,9 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
     public static class PolygonDownloaderProgram
     {
         /// <summary>
-        /// Entry point to the Polygon Data Downloader.
+        // Entry point to the Polygon Data Downloader.
         /// </summary>
-        /// <param name="tickers"></param>
-        /// <param name="resolution"></param>
-        /// <param name="fromDate"></param>
-        /// <param name="toDate"></param>
+        /// <param name="params"></param>
         public static void PolygonDownloader(PolygonDownloaderParams @params)
         {
             try
@@ -79,9 +75,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                 }
 
                 IDataDownloader polygonDownloader = new PolygonDataDownloader(@params.ApiKey);
-
                 Symbol symbol = null;
-                List<BaseData> data = new List<BaseData>();
 
                 for (int iTicker = 0; iTicker < @params.Tickers.Count; ++iTicker)
                 {
@@ -89,9 +83,18 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 
                     for (int iResolution = 0; iResolution < resolutions.Length; ++iResolution)
                     {
-                        data.AddRange(polygonDownloader.Get(
+                        IEnumerable<BaseData> data = polygonDownloader.Get(
                             symbol, resolutions[iResolution], @params.FromDate, @params.ToDate
-                        ));
+                        );
+
+                        LeanDataWriter dataWriter = new LeanDataWriter(
+                            resolutions[iResolution],
+                            symbol,
+                            Config.Get("data-directory", "../../../../Data"),
+                            TickType.Trade
+                        );
+
+                        dataWriter.Write(data);
                     }
                 }
             }
@@ -100,8 +103,6 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                 Log.Error(e);
                 Environment.Exit(1);
             }
-
-            throw new NotImplementedException();
         }
     }
 }

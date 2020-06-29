@@ -167,7 +167,9 @@ namespace QuantConnect.ToolBox.Polygon
             return result;
         }
 
-        private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<TWrap, TRes>(Func<DateTime, string> pathEndpointBuilder, DateTime startDate, DateTime endDate, int maxLimit = 10000)
+        private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<TWrap, TRes>(
+            Func<DateTime, string> pathEndpointBuilder, DateTime startDate, DateTime endDate, int maxLimit = 10000)
+
             where TRes : ITickResult
             where TWrap : HistoricTradesBase<TRes>
         {
