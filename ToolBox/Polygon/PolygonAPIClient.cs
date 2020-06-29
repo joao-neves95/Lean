@@ -16,10 +16,11 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Globalization;
+using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Globalization;
 
 using Newtonsoft.Json;
 
@@ -84,19 +85,23 @@ namespace QuantConnect.ToolBox.Polygon
 
         #region PUBLIC STATIC PROPERTIES
 
-        public static string[] ImplementedResolutionsStr
-        {
-            get
-            {
-                return new string[] { "Tick" };
-            }
-        }
-
         public static Resolution[] ImplementedResolutions
         {
             get
             {
-                return new Resolution[] { Resolution.Tick };
+                return new Resolution[] {
+                    Resolution.Tick, Resolution.Minute, Resolution.Hour, Resolution.Daily
+                };
+            }
+        }
+
+        public static string[] ImplementedResolutionsStr
+        {
+            get
+            {
+                return PolygonAPIClient.ImplementedResolutions
+                                       .Select((resolution) => Enum.GetName(typeof(Resolution), resolution))
+                                       .ToArray();
             }
         }
 
