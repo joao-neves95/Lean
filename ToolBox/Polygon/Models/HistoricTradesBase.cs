@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace QuantConnect.ToolBox.Polygon.Models
 {
     public abstract class HistoricTradesBase<T>
-        where T : IPolygonAPIResult
+        where T : ITickResult
     {
         public abstract int ResultsCount { get; set; }
 

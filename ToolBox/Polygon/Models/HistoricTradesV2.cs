@@ -21,8 +21,8 @@ using Newtonsoft.Json;
 
 namespace QuantConnect.ToolBox.Polygon.Models
 {
-    public class StockHistoricTrades<T> : HistoricTradesBase<T>
-        where T : IPolygonAPIResult
+    public class HistoricTradesV2<T> : HistoricTradesBase<T>
+        where T : ITickResult
     {
         [JsonProperty("db_latency")]
         public int MsLatency { get; set; }

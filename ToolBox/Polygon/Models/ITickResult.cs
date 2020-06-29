@@ -15,30 +15,12 @@
  * https://github.com/joao-neves95
 */
 
-using System.Collections.Generic;
-
-using Newtonsoft.Json;
+using QuantConnect.Data.Market;
 
 namespace QuantConnect.ToolBox.Polygon.Models
 {
-    public class CryptoHistoricTrades<T> : HistoricTradesBase<T>
-        where T : IPolygonAPIResult
+    public interface ITickResult
     {
-        [JsonProperty("day")]
-        public string Date { get; set; }
-
-        [JsonProperty("msLatency")]
-        public int MsLatency { get; set; }
-
-        [JsonProperty("status")]
-        public string Status { get; set; }
-
-        [JsonProperty("symbol")]
-        public string Symbol { get; set; }
-
-        public override int ResultsCount { get { return this.Results.Count; } set { } }
-
-        [JsonProperty("ticks")]
-        public override List<T> Results { get; set; } = new List<T>();
+        Tick ToTick(Symbol symbol = null);
     }
 }

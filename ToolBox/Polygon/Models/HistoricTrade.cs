@@ -21,7 +21,7 @@ using QuantConnect.Data.Market;
 
 namespace QuantConnect.ToolBox.Polygon.Models
 {
-    public class HistoricTrade : IPolygonAPIResult
+    public class HistoricTrade : ITickResult
     {
         [JsonProperty("t")]
         public int Timestamp { get; set; }
