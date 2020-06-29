@@ -29,7 +29,6 @@ using QuantConnect.ToolBox.Polygon.Models;
 
 namespace QuantConnect.ToolBox.Polygon
 {
-    // https://polygon.io/docs/swagger.json
     /// <summary>
     /// 
     /// Class to interact with Polygon's API.
@@ -44,7 +43,7 @@ namespace QuantConnect.ToolBox.Polygon
         public PolygonAPIClient(string apiKey)
         {
             this.ApiKey = apiKey;
-            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest)
+            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest);
             {
                 Query = PolygonEndpoints.QueryKey_ApiKey_Rest + "=" + this.ApiKey
             };
@@ -108,7 +107,7 @@ namespace QuantConnect.ToolBox.Polygon
         #region PRIVATE METHODS
 
         /// <summary>
-        /// Wrapper method to control GET requests.
+        /// Wrapper method to control GET requests with authorization.
         /// 
         /// <para></para>
         /// Original author @joao-neves95.
@@ -120,6 +119,7 @@ namespace QuantConnect.ToolBox.Polygon
         private async Task<T> GetAsync<T>(string pathEndpoint, string[] additionalQueryParams = null)
         {
             this.UriBuilder.Path = pathEndpoint;
+            this.UriBuilder.Query = PolygonEndpoints.QueryKey_ApiKey_Rest + "=" + this.ApiKey;
 
             if (additionalQueryParams != null && additionalQueryParams.Length > 0)
             {
@@ -144,13 +144,14 @@ namespace QuantConnect.ToolBox.Polygon
             return result;
         }
 
-        private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<T>(Func<DateTime, string> pathEndpointBuilder, DateTime startDate, DateTime endDate, int maxLimit = 10000)
-            where T : HistoricTradesBase<HistoricTrade>
+        private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<TWrap, TRes>(Func<DateTime, string> pathEndpointBuilder, DateTime startDate, DateTime endDate, int maxLimit = 10000)
+            where TRes : ITickResult
+            where TWrap : HistoricTradesBase<TRes>
         {
             DateTime currentDate = startDate;
 
-            T completeResponse = default(T);
-            T currentResponse = default(T);
+            TWrap completeResponse = default(TWrap);
+            TWrap currentResponse = default(TWrap);
 
             while (currentDate <= endDate)
             {
@@ -158,7 +159,7 @@ namespace QuantConnect.ToolBox.Polygon
                 int lastResultTimestamp = -1;
                 do
                 {
-                    currentResponse = await this.GetAsync<T>(
+                    currentResponse = await this.GetAsync<TWrap>(
                         pathEndpointBuilder(currentDate),
                         lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_OffsetTimestamp_Rest}={lastResultTimestamp}" }
                     );
