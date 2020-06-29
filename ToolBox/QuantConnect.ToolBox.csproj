@@ -331,12 +331,14 @@
     <Compile Include="Polygon\Constants\PolygonMessages.cs" />
     <Compile Include="Polygon\Enums\AssetType.cs" />
     <Compile Include="Polygon\Models\CryptoHistoricTrades.cs" />
+    <Compile Include="Polygon\Models\ForexTrade.cs" />
     <Compile Include="Polygon\Models\HistoricTradesV1.cs" />
     <Compile Include="Polygon\Models\HistoricTradesBase.cs" />
     <Compile Include="Polygon\Models\HistoricTradesV2.cs" />
     <Compile Include="Polygon\Models\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\ITickResult.cs" />
     <Compile Include="Polygon\PolygonAPIClient.cs" />
+    <Compile Include="Polygon\PolygonDownloader\PolygonForexDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonCryptoDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonStockDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderParams.cs" />

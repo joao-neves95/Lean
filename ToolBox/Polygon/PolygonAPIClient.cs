@@ -228,6 +228,19 @@ namespace QuantConnect.ToolBox.Polygon
             );
         }
 
+        public async Task<List<Tick>> GetForexHistoricTradesAsync(string fromTicker, string toTicker, DateTime startDate, DateTime endDate)
+        {
+            return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV1<ForexTrade>, ForexTrade>(
+                (currentDate) =>
+                {
+                    return $"{PolygonEndpoints.Path_ForexHistoricTrades_V1}/" +
+                           $"{fromTicker}/{toTicker}/" +
+                           $"{this.ParseDateString(currentDate)}";
+                },
+                startDate, endDate, PolygonEndpoints.ResponseLimit_ForexHistoricTrades
+            );
+        }
+
         #endregion PUBLIC METHODS
     }
 }
