@@ -14,6 +14,8 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 
         public const string ErrorNotice = "PolygonDownloader ERROR: ";
 
+        public const string EndDateBiggerStartDate = "The end date must be greater or equal than the start date.";
+
         private const string _InvalidResolution = "Invalid resoltion ";
 
         public const string NotImplementedResolution = "Resoltion not yet implemented.";
@@ -21,6 +23,8 @@ namespace QuantConnect.ToolBox.Polygon.Constants
         private const string _InvalidAssetType = "Invalid asset type ";
 
         public const string NotImplementedAssetType = "Asset Type not yet implemented.";
+
+        public const string InvalidResolutionTimespan = PolygonMessages._InvalidResolution + "/ timespan.";
 
         public static string ResolutionUse
         {
