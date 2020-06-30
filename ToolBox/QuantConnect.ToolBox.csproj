@@ -331,6 +331,7 @@
     <Compile Include="Polygon\Constants\PolygonMessages.cs" />
     <Compile Include="Polygon\Enums\AssetType.cs" />
     <Compile Include="Polygon\Enums\Timespan.cs" />
+    <Compile Include="Polygon\IPolygonAPIClient.cs" />
     <Compile Include="Polygon\Models\AggregatesV2.cs" />
     <Compile Include="Polygon\Models\AggregateV2.cs" />
     <Compile Include="Polygon\Models\ForexTrade.cs" />
