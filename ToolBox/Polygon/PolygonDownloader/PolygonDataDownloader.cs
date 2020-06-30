@@ -47,16 +47,32 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
             switch (resolution)
             {
                 case Resolution.Tick:
+                    string toTicker = string.Empty;
+                    string fromTicker = string.Empty;
+
+                    if (symbol.SecurityType == SecurityType.Forex || symbol.SecurityType == SecurityType.Crypto)
+                    {
+                        string[] splitedSymbol = symbol.Value.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (splitedSymbol.Length != 2)
+                        {
+                            throw new Exception(PolygonMessages.InvalidSymbolTickData);
+                        }
+
+                        toTicker = splitedSymbol[0];
+                        fromTicker = splitedSymbol[1];
+                    }
+
                     switch (symbol.SecurityType)
                     {
                         case SecurityType.Equity:
                             return this.PolygonAPI.GetStockHistoricTradesAsync(symbol.Value, startDate, endDate)
                                                   .GetAwaiter().GetResult();
                         case SecurityType.Forex:
-                            return this.PolygonAPI.GetForexHistoricTradesAsync("", "", startDate, endDate)
+                            return this.PolygonAPI.GetForexHistoricTradesAsync(toTicker, fromTicker, startDate, endDate)
                                        .GetAwaiter().GetResult();
                         case SecurityType.Crypto:
-                            return this.PolygonAPI.GetCryptoHistoricTradesAsync("", "", startDate, endDate)
+                            return this.PolygonAPI.GetCryptoHistoricTradesAsync(toTicker, fromTicker, startDate, endDate)
                                                   .GetAwaiter().GetResult();
                     }
 
@@ -73,7 +89,6 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                         PolygonMessages.InvalidResolution(nameof(resolution))
                     );
             }
-
         }
     }
 }

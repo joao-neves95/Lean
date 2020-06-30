@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -40,6 +40,10 @@ namespace QuantConnect.ToolBox.Polygon.Constants
         public const string InvalidResolutionTimespan = PolygonMessages._InvalidResolution + "/ timespan.";
 
         public const string RequestError = PolygonMessages.ErrorNotice + "Polygon.io API request error.";
+
+        public const string InvalidSymbolTickData = PolygonMessages.ErrorNotice +
+                                                    "Invalid symbol value. For forex/crypto data, you will have to use a slash. " +
+                                                    "E.g.: \"USD/EUR\" \"USD/BTC\"";
 
         public static string ResolutionUse
         {
