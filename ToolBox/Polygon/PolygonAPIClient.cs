@@ -24,6 +24,7 @@ using System.Globalization;
 
 using Newtonsoft.Json;
 
+using QuantConnect.Util;
 using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Constants;
 using QuantConnect.ToolBox.Polygon.Models;
@@ -60,7 +61,7 @@ namespace QuantConnect.ToolBox.Polygon
         {
             if (!this.Disposed)
             {
-                this.HttpClient.Dispose();
+                this.HttpClient.DisposeSafely();
                 this.Disposed = true;
             }
         }
@@ -149,22 +150,28 @@ namespace QuantConnect.ToolBox.Polygon
                 this.UriBuilder.Query = this.UriBuilder.Query.Substring(1) + string.Join("&", additionalQueryParams);
             }
 
-            T result = default(T);
             HttpResponseMessage response = await this.HttpClient.GetAsync(this.UriBuilder.Uri);
 
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), new JsonSerializerSettings()
-                {
-                    NullValueHandling = NullValueHandling.Include,
-                    MissingMemberHandling = MissingMemberHandling.Ignore,
-                    ObjectCreationHandling = ObjectCreationHandling.Auto
-                });
+                return JsonConvert.DeserializeObject<T>(
+                    await response.Content.ReadAsStringAsync(),
+                    new JsonSerializerSettings()
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore,
+                        ObjectCreationHandling = ObjectCreationHandling.Auto
+                    }
+                );
             }
 
-            // TODO: (_SHIVAYL_) - Add error logging.
-
-            return result;
+            throw new Exception(
+                PolygonMessages.RequestError + Environment.NewLine +
+                "REQUEST INFO:" + Environment.NewLine +
+                "Status Code:" + response.StatusCode +
+                "Reason Phrase:" + response.ReasonPhrase +
+                "Content:" + response.Content
+            );
         }
 
         private async Task<List<Tick>> GetHistoricTradesPaginatedAsync<TWrap, TRes>(
@@ -191,7 +198,6 @@ namespace QuantConnect.ToolBox.Polygon
 
                     if (currentResponse == null || currentResponse.Results.Count == 0)
                     {
-                        // TODO: (_SHIVAYL_) - Log invalid response.
                         continue;
                     }
 
