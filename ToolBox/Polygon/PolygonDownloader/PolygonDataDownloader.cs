@@ -76,7 +76,7 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                                                   .GetAwaiter().GetResult();
                     }
 
-                    throw new Exception();
+                    throw this.ThrowInvalidResolution(resolution);
 
                 case Resolution.Minute:
                 case Resolution.Hour:
@@ -84,11 +84,16 @@ namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
                     return this.PolygonAPI.GetAggregatesAsync(symbol.Value, PolygonAPIClient.ComputeTimespan(resolution), startDate, endDate)
                                           .GetAwaiter().GetResult();
                 default:
-                    throw new NotImplementedException(
-                        PolygonMessages.NotImplementedResolution +
-                        PolygonMessages.InvalidResolution(nameof(resolution))
-                    );
+                    throw this.ThrowInvalidResolution(resolution);
             }
+        }
+
+        private Exception ThrowInvalidResolution(Resolution resolution)
+        {
+            throw new NotImplementedException(
+                PolygonMessages.NotImplementedResolution +
+                PolygonMessages.InvalidResolution(nameof(resolution))
+            );
         }
     }
 }
