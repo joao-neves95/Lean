@@ -39,7 +39,7 @@ namespace QuantConnect.ToolBox.Polygon
     /// 
     /// </summary>
     /// <author> https://github.com/joao-neves95 </author>
-    public class PolygonAPIClient : IDisposable
+    public class PolygonAPIClient : IPolygonAPIClient, IDisposable
     {
         #region CONSTRUCTOR / DESTRUCTOR
 
