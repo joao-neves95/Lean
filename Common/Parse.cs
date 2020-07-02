@@ -186,5 +186,16 @@ namespace QuantConnect
         {
             return long.TryParse(input, numberStyle, CultureInfo.InvariantCulture, out value);
         }
+
+        /// <summary>
+        /// Tries to parse the provided value as a <see cref="Resolution"/> using the specified <paramref name="input"/>
+        /// </summary>
+        /// <param name="input"> The string representation of <see cref="Resolution"/>. </param>
+        /// <param name="resolution"></param>
+        /// <returns></returns>
+        public static bool TryParseResolution(string input, out Resolution resolution)
+        {
+            return Enum.TryParse(input, true, out resolution);
+        }
     }
 }
