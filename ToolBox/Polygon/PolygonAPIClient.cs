@@ -27,8 +27,9 @@ using Newtonsoft.Json;
 using QuantConnect.Util;
 using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Constants;
-using QuantConnect.ToolBox.Polygon.Models;
+using QuantConnect.ToolBox.Polygon.Interfaces;
 using QuantConnect.ToolBox.Polygon.Enums;
+using QuantConnect.ToolBox.Polygon.Models;
 
 namespace QuantConnect.ToolBox.Polygon
 {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.Polygon.Enums;
 
-namespace QuantConnect.ToolBox.Polygon
+namespace QuantConnect.ToolBox.Polygon.Interfaces
 {
     public interface IPolygonAPIClient
     {

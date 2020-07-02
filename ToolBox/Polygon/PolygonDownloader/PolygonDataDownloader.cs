@@ -20,6 +20,7 @@ using System.Collections.Generic;
 
 using QuantConnect.Data;
 using QuantConnect.ToolBox.Polygon.Constants;
+using QuantConnect.ToolBox.Polygon.Interfaces;
 
 namespace QuantConnect.ToolBox.Polygon.PolygonDownloader
 {
