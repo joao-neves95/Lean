@@ -341,6 +341,7 @@
     <Compile Include="Polygon\Models\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\ITickResult.cs" />
     <Compile Include="Polygon\PolygonAPIClient.cs" />
+    <Compile Include="Polygon\PolygonDataQueueHandler\PolygonDataQueueHandler.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderParams.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderProgram.cs" />
