@@ -47,7 +47,7 @@ namespace QuantConnect.ToolBox.Polygon
         public PolygonAPIClient(string apiKey)
         {
             this.ApiKey = apiKey;
-            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_Rest, PolygonEndpoints.Host_Rest);
+            this.UriBuilder = new UriBuilder(PolygonEndpoints.Protocol_REST, PolygonEndpoints.Host_REST);
         }
 
         ~PolygonAPIClient()
@@ -144,7 +144,7 @@ namespace QuantConnect.ToolBox.Polygon
         private async Task<T> GetAsync<T>(string pathEndpoint, string[] additionalQueryParams = null)
         {
             this.UriBuilder.Path = pathEndpoint;
-            this.UriBuilder.Query = PolygonEndpoints.QueryKey_ApiKey_Rest + "=" + this.ApiKey;
+            this.UriBuilder.Query = PolygonEndpoints.QueryKey_REST_ApiKey + "=" + this.ApiKey;
 
             if (additionalQueryParams != null && additionalQueryParams.Length > 0)
             {
@@ -194,7 +194,7 @@ namespace QuantConnect.ToolBox.Polygon
                 {
                     currentResponse = await this.GetAsync<TWrap>(
                         pathEndpointBuilder(currentDate),
-                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_OffsetTimestamp_Rest}={lastResultTimestamp}" }
+                        lastResultTimestamp == -1 ? null : new[] { $"{PolygonEndpoints.QueryKey_REST_OffsetTimestamp}={lastResultTimestamp}" }
                     );
 
                     if (currentResponse == null || currentResponse.Results.Count == 0)
@@ -256,7 +256,7 @@ namespace QuantConnect.ToolBox.Polygon
             return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV2<HistoricTrade>, HistoricTrade>(
                 (currentDate) =>
                 {
-                    return $"{PolygonEndpoints.Path_StockHistoricTrades_V2}/" +
+                    return $"{PolygonEndpoints.Path_REST_StockHistoricTrades_V2}/" +
                            $"{ticker}/" +
                            $"{this.ParseDateString(currentDate)}";
                 },
@@ -269,7 +269,7 @@ namespace QuantConnect.ToolBox.Polygon
             return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV1<HistoricTrade>, HistoricTrade>(
                 (currentDate) =>
                 {
-                    return $"{PolygonEndpoints.Path_CryptoHistoricTrades_V1}/" +
+                    return $"{PolygonEndpoints.Path_REST_CryptoHistoricTrades_V1}/" +
                            $"{fromTicker}/{toTicker}/" +
                            $"{this.ParseDateString(currentDate)}";
                 },
@@ -282,7 +282,7 @@ namespace QuantConnect.ToolBox.Polygon
             return await this.GetHistoricTradesPaginatedAsync<HistoricTradesV1<ForexTrade>, ForexTrade>(
                 (currentDate) =>
                 {
-                    return $"{PolygonEndpoints.Path_ForexHistoricTrades_V1}/" +
+                    return $"{PolygonEndpoints.Path_REST_ForexHistoricTrades_V1}/" +
                            $"{fromTicker}/{toTicker}/" +
                            $"{this.ParseDateString(currentDate)}";
                 },
@@ -293,7 +293,7 @@ namespace QuantConnect.ToolBox.Polygon
         public async Task<List<TradeBar>> GetAggregatesAsync(string ticker, Timespan timespan, DateTime startDate, DateTime endDate)
         {
             AggregatesV2 response = await this.GetAsync<AggregatesV2>(
-                $"{PolygonEndpoints.Path_Aggregates_V2}/" +
+                $"{PolygonEndpoints.Path_REST_Aggregates_V2}/" +
                 $"{ticker}/1/{Enum.GetName(typeof(Timespan), timespan).ToLowerInvariant()}" +
                 $"{this.ParseDateString(startDate)}/{this.ParseDateString(endDate)}/" +
                 $"false"
