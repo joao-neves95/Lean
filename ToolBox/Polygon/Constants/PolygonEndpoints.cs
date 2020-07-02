@@ -27,32 +27,62 @@ namespace QuantConnect.ToolBox.Polygon.Constants
     /// </summary>
     public static class PolygonEndpoints
     {
+        public const string DateFormat = "yyyy-MM-dd";
+
+        #region REST API
+
         public const int ResponseLimit_StockHistoricTrades = 50000;
 
         public const int ResponseLimit_CryptoHistoricTrades = 10000;
 
         public const int ResponseLimit_ForexHistoricTrades = 10000;
 
-        public const string DateFormat = "yyyy-MM-dd";
+        public const string Protocol_REST = "https";
 
-        public const string Protocol_Rest = "https";
+        public const string Host_REST = "api.polygon.io";
+
+        public const string QueryKey_REST_ApiKey = "apiKey";
+
+        public const string QueryKey_REST_OffsetTimestamp = "offset";
+
+        public const string Path_REST_StockHistoricTrades_V2 = "v2/ticks/stocks/trades";
+
+        public const string Path_REST_CryptoHistoricTrades_V1 = "v1/historic/crypto";
+
+        public const string Path_REST_ForexHistoricTrades_V1 = "v1/historic/forex";
+
+        public const string Path_REST_Aggregates_V2 = "v2/aggs/ticker";
+
+        #endregion REST API
+
+        #region WS API
 
         public const string Protocol_WS = "wss";
 
-        public const string Host_Rest = "api.polygon.io";
-
         public const string Host_WS = "socket.polygon.io";
 
-        public const string QueryKey_ApiKey_Rest = "apiKey";
+        public const string Path_WS_Stocks = "stocks";
 
-        public const string QueryKey_OffsetTimestamp_Rest = "offset";
+        public const string Path_WS_Crypto = "crypto";
 
-        public const string Path_StockHistoricTrades_V2 = "v2/ticks/stocks/trades";
+        public const string Path_WS_Forex = "forex";
 
-        public const string Path_CryptoHistoricTrades_V1 = "v1/historic/crypto";
+        public const string Channel_Stocks_Trades = "T.";
 
-        public const string Path_ForexHistoricTrades_V1 = "v1/historic/forex";
+        public const string Channel_Stocks_Quotes = "Q.";
 
-        public const string Path_Aggregates_V2 = "v2/aggs/ticker";
+        public const string Channel_Stocks_Aggregates_Second = "A.";
+
+        public const string Channel_Stocks_Aggregates_Minute = "AM.";
+
+        public const string Channel_Forex_Quotes = "C.";
+
+        public const string Channel_Forex_Aggregates_Minute = "CA.";
+
+        public const string Channel_Crypto_Trades = "XT.";
+
+        public const string Channel_Crypto_Quotes = "XQ.";
+
+        #endregion WS API
     }
 }
