@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
     public abstract class HistoricTradesBase<T>
         where T : ITickResult

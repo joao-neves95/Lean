@@ -19,24 +19,23 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
-    public class HistoricTradesV2<T> : HistoricTradesBase<T>
+    public class HistoricTradesV1<T> : HistoricTradesBase<T>
         where T : ITickResult
     {
-        [JsonProperty("db_latency")]
+        [JsonProperty("day")]
+        public string Date { get; set; }
+
+        [JsonProperty("msLatency")]
         public int MsLatency { get; set; }
 
-        [JsonProperty("success")]
-        public bool Success { get; set; }
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-        [JsonProperty("ticker")]
-        public string Ticker { get; set; }
+        public override int ResultsCount { get { return this.Results.Count; } set { } }
 
-        [JsonProperty("results_count")]
-        public override int ResultsCount { get; set; } = 0;
-
-        [JsonProperty("results")]
+        [JsonProperty("ticks")]
         public override List<T> Results { get; set; } = new List<T>();
     }
 }

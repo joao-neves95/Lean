@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
     public class HistoricTrade : ITickResult
     {

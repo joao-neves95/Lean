@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
     public class AggregatesV2
     {

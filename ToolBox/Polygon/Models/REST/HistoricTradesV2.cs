@@ -15,39 +15,28 @@
  * https://github.com/joao-neves95
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using QuantConnect.Data.Market;
-
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
-    public class ForexTrade : ITickResult
+    public class HistoricTradesV2<T> : HistoricTradesBase<T>
+        where T : ITickResult
     {
-        [JsonProperty("a")]
-        public int AskPrice { get; set; }
+        [JsonProperty("db_latency")]
+        public int MsLatency { get; set; }
 
-        [JsonProperty("b")]
-        public int BidPrice { get; set; }
+        [JsonProperty("success")]
+        public bool Success { get; set; }
 
-        [JsonProperty("t")]
-        public int Timestamp { get; set; }
+        [JsonProperty("ticker")]
+        public string Ticker { get; set; }
 
-        public Tick ToTick(Symbol symbol = null)
-        {
-            return new Tick()
-            {
-                AskPrice = this.AskPrice,
-                BidPrice = this.BidPrice,
+        [JsonProperty("results_count")]
+        public override int ResultsCount { get; set; } = 0;
 
-                DataType = MarketDataType.Tick,
-                Symbol = symbol
-            };
-        }
+        [JsonProperty("results")]
+        public override List<T> Results { get; set; } = new List<T>();
     }
 }

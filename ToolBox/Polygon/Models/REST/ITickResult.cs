@@ -17,7 +17,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.ToolBox.Polygon.Models
+namespace QuantConnect.ToolBox.Polygon.Models.REST
 {
     public interface ITickResult
     {
