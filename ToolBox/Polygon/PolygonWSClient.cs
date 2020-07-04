@@ -191,13 +191,14 @@ namespace QuantConnect.ToolBox.Polygon
 
         public void Subscribe(string[] tickers, WSChannelType wsChannelType)
         {
+            string channelType = this.ComputeChannelType(wsChannelType);
             StringBuilder streamParams = new StringBuilder(tickers.Length);
 
             // Let's use a loop to do everything at the same time and faster, instead of using LINQ.
             // We want something like this: "T.MSFT,T.AAPL,T.AMD,T.NVDA".
             for (int i = 0; i < tickers.Length; ++i)
             {
-                streamParams.Append(this.ComputeChannelType(wsChannelType));
+                streamParams.Append(channelType);
                 streamParams.Append(tickers[i]);
 
                 if (i < tickers.Length - 1)
