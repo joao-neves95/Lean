@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
   <Import Project="..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props')" />
@@ -331,8 +331,9 @@
     <Compile Include="Polygon\Constants\PolygonMessages.cs" />
     <Compile Include="Polygon\Enums\AssetType.cs" />
     <Compile Include="Polygon\Enums\Timespan.cs" />
+    <Compile Include="Polygon\Enums\WSChannelType.cs" />
     <Compile Include="Polygon\Interfaces\IPolygonAPIClient.cs" />
-    <Compile Include="Polygon\Models\AggregatesV2.cs" />
+    <Compile Include="Polygon\Interfaces\IPolygonWSClient.cs" />
     <Compile Include="Polygon\Models\REST\AggregatesV2.cs" />
     <Compile Include="Polygon\Models\REST\AggregateV2.cs" />
     <Compile Include="Polygon\Models\REST\ForexTrade.cs" />
@@ -341,11 +342,13 @@
     <Compile Include="Polygon\Models\REST\HistoricTradesV2.cs" />
     <Compile Include="Polygon\Models\REST\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\REST\ITickResult.cs" />
+    <Compile Include="Polygon\Models\WS\Request.cs" />
     <Compile Include="Polygon\PolygonAPIClient.cs" />
     <Compile Include="Polygon\PolygonDataQueueHandler\PolygonDataQueueHandler.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDataDownloader.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderParams.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDownloaderProgram.cs" />
+    <Compile Include="Polygon\PolygonWSClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RandomDataGenerator\DividendSplitMapGenerator.cs" />
     <Compile Include="RandomDataGenerator\ConsoleLeveledOutput.cs" />

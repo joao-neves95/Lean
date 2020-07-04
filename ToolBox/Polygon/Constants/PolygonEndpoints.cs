@@ -83,6 +83,12 @@ namespace QuantConnect.ToolBox.Polygon.Constants
 
         public const string Channel_Crypto_Quotes = "XQ.";
 
+        public const string Action_WS_Auth = "auth";
+
+        public const string Action_WS_Sub = "subscribe";
+
+        public const string Action_WS_Unsub = "unsubscribe";
+
         #endregion WS API
     }
 }

@@ -35,7 +35,7 @@ namespace QuantConnect.ToolBox.Polygon
 {
     /// <summary>
     /// 
-    /// Class to interact with Polygon's API.
+    /// A wrapper to interact with Polygon's REST API.
     /// Original by @joao-neves95.
     /// 
     /// </summary>
