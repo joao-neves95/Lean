@@ -342,7 +342,12 @@
     <Compile Include="Polygon\Models\REST\HistoricTradesV2.cs" />
     <Compile Include="Polygon\Models\REST\HistoricTrade.cs" />
     <Compile Include="Polygon\Models\REST\ITickResult.cs" />
+    <Compile Include="Polygon\Models\WS\CryptoQuoteEvent.cs" />
+    <Compile Include="Polygon\Models\WS\CryptoTradeEvent.cs" />
+    <Compile Include="Polygon\Models\WS\ForexQuoteEvent.cs" />
     <Compile Include="Polygon\Models\WS\Request.cs" />
+    <Compile Include="Polygon\Models\WS\StockQuoteEvent.cs" />
+    <Compile Include="Polygon\Models\WS\StockTradeEvent.cs" />
     <Compile Include="Polygon\PolygonAPIClient.cs" />
     <Compile Include="Polygon\PolygonDataQueueHandler\PolygonDataQueueHandler.cs" />
     <Compile Include="Polygon\PolygonDownloader\PolygonDataDownloader.cs" />
